@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/commons-logging-1.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/filterbuilder.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/fontbox-0.8.0-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/htmllexer.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/htmlparser.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/lucene-core-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/lucene-demos-3.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/pdfbox-0.8.0-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/poi-3.5-FINAL-20090928.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/poi-contrib-3.5-FINAL-20090928.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/poi-ooxml-3.5-FINAL-20090928.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/poi-scratchpad-3.5-FINAL-20090928.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/sitecapturer.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Wuzjaa/Desktop/jar/thumbelina.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
