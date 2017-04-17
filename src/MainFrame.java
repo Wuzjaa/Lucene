@@ -7,16 +7,8 @@ import java.awt.Rectangle;
 import javax.swing.table.*;
 
 /**
- * <p>Title: INFORMATION RETRIEVE</p>
+ *Ö÷Ò³Ãæ
  *
- * <p>Description: HOMEWORK</p>
- *
- * <p>Copyright: Copyright (c) 2009</p>
- *
- * <p>Company: BUPT</p>
- *
- * @author SCY
- * @version 1.1
  */
 
 

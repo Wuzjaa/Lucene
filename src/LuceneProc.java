@@ -1,14 +1,6 @@
 /**
- * <p>Title: </p>
- *
- * <p>Description: </p>
- *
- * <p>Copyright: Copyright (c) 2009</p>
- *
- * <p>Company: </p>
- *
- * @author not attributable
- * @version 1.0
+ * 建立索引类
+ * 
  */
 import org.apache.lucene.*;
 import org.apache.lucene.index.IndexWriter;
