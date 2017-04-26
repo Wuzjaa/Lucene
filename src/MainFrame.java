@@ -1,9 +1,11 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.awt.Rectangle;
+
 import javax.swing.table.*;
 
 /**
@@ -11,6 +13,18 @@ import javax.swing.table.*;
  *
  */
 
+
+
+///选择文件目录
+/*
+ * 
+ * 
+ * JFileChooser chooser = new JFileChooser();
+    	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    	chooser.showOpenDialog(null);
+    	String path = chooser.getSelectedFile().getPath();
+    	System.out.println(path);
+ * */
 
 public class MainFrame extends JFrame implements ActionListener {
     public static PrintWriter pw = null; //
@@ -34,6 +48,8 @@ public class MainFrame extends JFrame implements ActionListener {
     JButton jButton4 = new JButton();
     JButton jButton5 = new JButton();
     JButton jButton6 = new JButton();
+    JButton jButton7 = new JButton();
+    JButton jButton8 = new JButton();
     JPanel jPanel1 = new JPanel(new BorderLayout());
     int height;
     int width;
@@ -63,25 +79,25 @@ public class MainFrame extends JFrame implements ActionListener {
 
         Container con = this.getContentPane();
         jLabel1.setText("文档路径");
-        jLabel1.setBounds(new Rectangle(16, 15, 66, 19));
+        jLabel1.setBounds(new Rectangle(16, 14, 50, 19));
         jLabel2.setText("索引路径");
-        jLabel2.setBounds(new Rectangle(16, 38, 67, 20));
+        jLabel2.setBounds(new Rectangle(16, 38, 50, 19));
         jLabel3.setText("查询关键字");
-        jLabel3.setBounds(new Rectangle(16, 69, 81, 24));
+        jLabel3.setBounds(new Rectangle(16, 69, 50, 19));
         jLabel4.setText("查询结果如下");
         jLabel4.setBounds(new Rectangle(16, 108, 107, 19));
-        jTextField1.setBounds(new Rectangle(82, 14, 207, 20));
-        jTextField2.setBounds(new Rectangle(82, 38, 207, 20));
-        jTextField2.setText("c:\\index\\");
-        jTextField3.setBounds(new Rectangle(87, 69, 201, 24));
-        jTextField4.setBounds(new Rectangle(172, 106, 210, 20));
+        jTextField1.setBounds(new Rectangle(82, 14, 207, 19));
+        jTextField2.setBounds(new Rectangle(82, 38, 207, 19));
+        jTextField2.setText("");
+        jTextField3.setBounds(new Rectangle(82, 69, 207, 27));
+        jTextField4.setBounds(new Rectangle(172, 106, 210, 19));
         jTextField4.setBackground(this.getBackground());
         jTextField4.setBorder(BorderFactory.createEmptyBorder());
         jTextField4.setEditable(false);
-        jButton1.setBounds(new Rectangle(293, 19, 92, 27));
+        jButton1.setBounds(new Rectangle(340, 19, 40, 27));
         jButton1.setText("建立索引");
         jButton1.addActionListener(new MainFrame_jButton1_actionAdapter(this));
-        jButton2.setBounds(new Rectangle(293, 69, 92, 26));
+        jButton2.setBounds(new Rectangle(290, 69, 40, 27));
         jButton2.setText("开始查询");
         jButton2.addActionListener(new MainFrame_jButton2_actionAdapter(this));
         jButton3.setBounds(new Rectangle(116, 267, 74, 23));
@@ -98,6 +114,16 @@ public class MainFrame extends JFrame implements ActionListener {
         jButton6.addActionListener(this);
         jPanel1.setBackground(Color.BLUE);
         jPanel1.setBounds(new Rectangle(16, 127, 365, 133));
+        
+        //打开目录
+        jButton7.setText("打开目录");
+        jButton7.setBounds(new Rectangle(290, 14, 40, 19));
+        jButton7.addActionListener(new openDir1(this));
+        
+        jButton8.setText("打开目录");
+        jButton8.setBounds(new Rectangle(290, 38, 40, 19));
+        jButton8.addActionListener(new openDir2(this));
+        
         //给显示结果的table设定列宽。
         for (int i = 0; i < 3; i++) {
             column = restable.getColumnModel().getColumn(i);
@@ -150,6 +176,8 @@ public class MainFrame extends JFrame implements ActionListener {
         con.add(jButton2);
         con.add(jButton1);
         con.add(jButton6);
+        con.add(jButton7);
+        con.add(jButton8);
         con.add(jPanel1);
         WindowDestroyer myListener = new WindowDestroyer();
         addWindowListener(myListener);
@@ -194,6 +222,10 @@ public class MainFrame extends JFrame implements ActionListener {
                          jButton5.getHeight() * height / oldheight);
         jButton6.setSize(jButton6.getWidth() * width / oldwidth,
                          jButton6.getHeight() * height / oldheight);
+        jButton7.setSize(jButton7.getWidth() * width / oldwidth,
+                jButton7.getHeight() * height / oldheight);
+        jButton8.setSize(jButton8.getWidth() * width / oldwidth,
+                jButton8.getHeight() * height / oldheight);
         jPanel1.setSize(jPanel1.getWidth() * width / oldwidth,
                         jPanel1.getHeight() * height / oldheight);
         jLabel1.setLocation(jLabel1.getLocation().x * width / oldwidth,
@@ -228,6 +260,10 @@ public class MainFrame extends JFrame implements ActionListener {
                              jButton5.getLocation().y * height / oldheight);
         jButton6.setLocation(jButton6.getLocation().x * width / oldwidth,
                              jButton6.getLocation().y * height / oldheight);
+        jButton7.setLocation(jButton7.getLocation().x * width / oldwidth,
+                jButton7.getLocation().y * height / oldheight);
+        jButton8.setLocation(jButton8.getLocation().x * width / oldwidth,
+                jButton8.getLocation().y * height / oldheight);
         jPanel1.setLocation(jPanel1.getLocation().x * width / oldwidth,
                             jPanel1.getLocation().y * height / oldheight);
         restable.setSize(restable.getSize().width * width / oldwidth,
@@ -271,6 +307,7 @@ public class MainFrame extends JFrame implements ActionListener {
         if (queryString.trim().equals("")) {
             JOptionPane.showMessageDialog(this, "请输入查询词！");
         } else {
+        	//执行检索
             switch (LuceneProc.SearchProc(indexpath, queryString, reslist)) {
             case 0:
                 jTextField4.setText("查询结果共" + reslist.size() + "条,当前为第" +
@@ -293,6 +330,25 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    ////打开文件夹
+    public void JB_openDir1(ActionEvent e) {
+    	JFileChooser chooser = new JFileChooser();
+    	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    	chooser.showOpenDialog(null);
+    	String path = chooser.getSelectedFile().getPath();
+    	 jTextField1.setText(path);//添加文件夹路径到文本域
+    }
+    ////打开文件夹
+    public void JB_openDir2(ActionEvent e) {
+    	JFileChooser chooser = new JFileChooser();
+    	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    	chooser.showOpenDialog(null);
+    	String path = chooser.getSelectedFile().getPath();
+    	jTextField2.setText(path);//添加文件夹路径到文本域
+    	
+    }
+    
+    
     public void actionPerformed(ActionEvent e) {
         if (reslist.size() == 0) {
             JOptionPane.showMessageDialog(this, "你还没有查询或查询结果为空！");
@@ -400,5 +456,29 @@ class MainFrame_jButton1_actionAdapter implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         adaptee.jButton1_actionPerformed(e);
+    }
+}
+
+//打开目录监视器
+class openDir1 implements ActionListener {
+    private MainFrame adaptee;
+    openDir1(MainFrame adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.JB_openDir1(e);
+    }
+}
+
+//打开目录监视器
+class openDir2 implements ActionListener {
+    private MainFrame adaptee;
+    openDir2(MainFrame adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.JB_openDir2(e);
     }
 }
