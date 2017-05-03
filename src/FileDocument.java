@@ -86,7 +86,40 @@ public class FileDocument {
                 MainFrame.pw.println("errors occur in adding file " + f.getPath());
                 return null;
             }
-        } else if (f.getPath().endsWith(".ppt")) {
+        }else if (f.getPath().endsWith(".jpg")||f.getPath().endsWith(".png")||f.getPath().endsWith(".jpg")||f.getPath().endsWith(".jpeg")||f.getPath().endsWith(".gif")||f.getPath().endsWith(".bmp")) {
+            String bodyText = null;
+            try {
+                bodyText = f.getName();
+                doc.add(new Field("contents", bodyText,
+                                  Field.Store.YES, Field.Index.ANALYZED));
+            } catch (Exception e) {
+                e.printStackTrace();
+                MainFrame.pw.println("errors occur in adding file " + f.getPath());
+                return null;
+            }
+        }else if (f.getPath().endsWith(".mp3")||f.getPath().endsWith(".wav")||f.getPath().endsWith(".ogg")) {
+            String bodyText = null;
+            try {
+                bodyText = f.getName();
+                doc.add(new Field("contents", bodyText,
+                                  Field.Store.YES, Field.Index.ANALYZED));
+            } catch (Exception e) {
+                e.printStackTrace();
+                MainFrame.pw.println("errors occur in adding file " + f.getPath());
+                return null;
+            }
+        }else if (f.getPath().endsWith(".mp4")||f.getPath().endsWith(".avi")||f.getPath().endsWith(".wmv")||f.getPath().endsWith(".mpg")||f.getPath().endsWith(".3gp")||f.getPath().endsWith(".mov")) {
+            String bodyText = null;
+            try {
+                bodyText = f.getName();
+                doc.add(new Field("contents", bodyText,
+                                  Field.Store.YES, Field.Index.ANALYZED));
+            } catch (Exception e) {
+                e.printStackTrace();
+                MainFrame.pw.println("errors occur in adding file " + f.getPath());
+                return null;
+            }
+        }else if (f.getPath().endsWith(".ppt")) {
             StringBuffer content = new StringBuffer("");
             InputStream is = new FileInputStream(f.getPath());
             try {
