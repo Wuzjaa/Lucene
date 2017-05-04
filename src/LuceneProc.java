@@ -7,15 +7,18 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.analysis.*;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.store.*;
+
 import java.io.*;
+
 import org.apache.lucene.search.*;
 import org.apache.lucene.queryParser.*;
+
 import java.util.*;
+
 import org.apache.lucene.util.Version;
 import org.apache.lucene.index.*;
+
 import javax.swing.*;
 public class LuceneProc {
     public LuceneProc() {
@@ -39,6 +42,10 @@ public class LuceneProc {
             IndexFiles.indexDocs(writer, docDir);//创建索引
             writer.optimize();
             writer.close();
+            FileOperation fOpertion = new FileOperation();
+            String fileDir = indexDir+"/test.txt";
+            File file = new File(fileDir);
+            fOpertion.createFile(file);
         } catch (Exception ex) {
             MainFrame.pw.println("建立索引出错，索引过程出现异常。");
             return 2;//there is a exception when index the file.
@@ -55,7 +62,7 @@ public class LuceneProc {
             Query query = qp.parse(queryString);
             TopDocs hits = searcher.search(query,MaxHits);
             MainFrame.pw.println("查询"+queryString+"成功，结果为"+hits.totalHits+"条。");
-            System.out.println(hits.totalHits);
+            //System.out.println(hits.totalHits);
             for (int i=0; i<hits.totalHits; i++) {
                 Document doc = searcher.doc(hits.scoreDocs[i].doc);
                 String[] ls = new String[2];

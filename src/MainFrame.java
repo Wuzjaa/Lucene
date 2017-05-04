@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.awt.Rectangle;
 
 import javax.swing.table.*;
@@ -28,7 +29,8 @@ import javax.swing.table.*;
 
 public class MainFrame extends JFrame implements ActionListener {
     public static PrintWriter pw = null; //
-    String srcpath, indexpath = ""; //srcpath要索引的文档路径，indexpath索引存储路径。
+    public static String indexpath ="";
+    String srcpath = ""; //srcpath要索引的文档路径，indexpath索引存储路径。
     String queryString = ""; //查询词。
     int rows = 5; //结果输出每页5行。
     int begin = 0; //从第一个结果开始显示。
@@ -50,6 +52,14 @@ public class MainFrame extends JFrame implements ActionListener {
     JButton jButton6 = new JButton();
     JButton jButton7 = new JButton();
     JButton jButton8 = new JButton();
+    
+    //历史记录button
+    JButton jButton11 = new JButton();
+    JButton jButton12 = new JButton();
+    JButton jButton13 = new JButton();
+    JButton jButton14 = new JButton();
+    JButton jButton15 = new JButton();
+    
     JPanel jPanel1 = new JPanel(new BorderLayout());
     int height;
     int width;
@@ -124,6 +134,28 @@ public class MainFrame extends JFrame implements ActionListener {
         jButton8.setBounds(new Rectangle(290, 38, 40, 19));
         jButton8.addActionListener(new openDir2(this));
         
+        
+        //历史记录button
+        jButton11.setBounds(new Rectangle(82, 100, 30, 19));
+        jButton11.addActionListener(new history1(this));
+        jButton11.setVisible(false);
+        
+        jButton12.setBounds(new Rectangle(120, 100, 30, 19));
+        jButton12.addActionListener(new history2(this));
+        jButton12.setVisible(false);
+     
+        jButton13.setBounds(new Rectangle(160, 100, 30, 19));
+        jButton13.addActionListener(new history3(this));
+        jButton13.setVisible(false);
+        
+        jButton14.setBounds(new Rectangle(200, 100, 30, 19));
+        jButton14.addActionListener(new history4(this));
+        jButton14.setVisible(false);
+        
+        jButton15.setBounds(new Rectangle(240, 100, 30, 19));
+        jButton15.addActionListener(new history5(this));
+        jButton15.setVisible(false);
+        
         //给显示结果的table设定列宽。
         for (int i = 0; i < 3; i++) {
             column = restable.getColumnModel().getColumn(i);
@@ -178,6 +210,11 @@ public class MainFrame extends JFrame implements ActionListener {
         con.add(jButton6);
         con.add(jButton7);
         con.add(jButton8);
+        con.add(jButton11);
+        con.add(jButton12);
+        con.add(jButton13);
+        con.add(jButton14);
+        con.add(jButton15);
         con.add(jPanel1);
         WindowDestroyer myListener = new WindowDestroyer();
         addWindowListener(myListener);
@@ -226,6 +263,16 @@ public class MainFrame extends JFrame implements ActionListener {
                 jButton7.getHeight() * height / oldheight);
         jButton8.setSize(jButton8.getWidth() * width / oldwidth,
                 jButton8.getHeight() * height / oldheight);
+        jButton11.setSize(jButton11.getWidth() * width / oldwidth,
+                jButton11.getHeight() * height / oldheight);
+        jButton12.setSize(jButton12.getWidth() * width / oldwidth,
+                jButton12.getHeight() * height / oldheight);
+        jButton13.setSize(jButton13.getWidth() * width / oldwidth,
+                jButton13.getHeight() * height / oldheight);
+        jButton14.setSize(jButton14.getWidth() * width / oldwidth,
+                jButton14.getHeight() * height / oldheight);
+        jButton15.setSize(jButton15.getWidth() * width / oldwidth,
+                jButton15.getHeight() * height / oldheight);
         jPanel1.setSize(jPanel1.getWidth() * width / oldwidth,
                         jPanel1.getHeight() * height / oldheight);
         jLabel1.setLocation(jLabel1.getLocation().x * width / oldwidth,
@@ -264,6 +311,16 @@ public class MainFrame extends JFrame implements ActionListener {
                 jButton7.getLocation().y * height / oldheight);
         jButton8.setLocation(jButton8.getLocation().x * width / oldwidth,
                 jButton8.getLocation().y * height / oldheight);
+        jButton11.setLocation(jButton11.getLocation().x * width / oldwidth,
+                jButton11.getLocation().y * height / oldheight);
+        jButton12.setLocation(jButton12.getLocation().x * width / oldwidth,
+                jButton12.getLocation().y * height / oldheight);
+        jButton13.setLocation(jButton13.getLocation().x * width / oldwidth,
+                jButton13.getLocation().y * height / oldheight);
+        jButton14.setLocation(jButton14.getLocation().x * width / oldwidth,
+                jButton14.getLocation().y * height / oldheight);
+        jButton15.setLocation(jButton15.getLocation().x * width / oldwidth,
+                jButton15.getLocation().y * height / oldheight);
         jPanel1.setLocation(jPanel1.getLocation().x * width / oldwidth,
                             jPanel1.getLocation().y * height / oldheight);
         restable.setSize(restable.getSize().width * width / oldwidth,
@@ -300,7 +357,7 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
-    public void jButton2_actionPerformed(ActionEvent e) {
+    public void jButton2_actionPerformed(ActionEvent e) throws Exception {
         indexpath = jTextField2.getText();
         queryString = jTextField3.getText();
         reslist.clear();
@@ -327,10 +384,84 @@ public class MainFrame extends JFrame implements ActionListener {
             default:
                 JOptionPane.showMessageDialog(this, "检索出错，请检查索引是否存在，路径是否正确！");
             }
+            FileOperation fOpertion = new FileOperation();
+            String fileDir = indexpath+"/test.txt";
+            File file = new File(fileDir);
+            this.isAddHistory(fileDir);//调用更新历史记录
+            String txtContent = fOpertion.readTxtFile(file);
+            Pattern pattern = Pattern.compile("[$]+");
+            String[] strs = pattern.split(txtContent);
+            //将历史记录贴到按钮标签上
+            switch(strs.length){
+            case 0:
+            	break;
+            case 2:
+            	jButton11.setText(strs[1]);
+            	jButton11.setVisible(true);
+            	break;
+            case 3:
+            	 jButton11.setText(strs[1]);
+                 jButton12.setText(strs[2]);
+                 jButton11.setVisible(true);
+                 jButton12.setVisible(true);
+                 break;
+            case 4:
+            	 jButton11.setText(strs[1]);
+                 jButton12.setText(strs[2]);
+                 jButton13.setText(strs[3]);
+                 jButton11.setVisible(true);
+                 jButton12.setVisible(true);
+                 jButton13.setVisible(true);
+                 break;
+            case 5:
+            	 jButton11.setText(strs[1]);
+                 jButton12.setText(strs[2]);
+                 jButton13.setText(strs[3]);
+                 jButton14.setText(strs[4]);
+                 jButton11.setVisible(true);
+                 jButton12.setVisible(true);
+                 jButton13.setVisible(true);
+                 jButton14.setVisible(true);
+                 break;
+            case 6:
+            	 jButton11.setText(strs[1]);
+                 jButton12.setText(strs[2]);
+                 jButton13.setText(strs[3]);
+                 jButton14.setText(strs[4]);
+                 jButton15.setText(strs[5]);
+                 jButton11.setVisible(true);
+                 jButton12.setVisible(true);
+                 jButton13.setVisible(true);
+                 jButton14.setVisible(true);
+                 jButton15.setVisible(true);
+                 break;
+            default:
+            }
         }
     }
 
-    ////打开文件夹
+    //判断是否添加历史记录
+    public void isAddHistory(String fileDir) throws Exception{
+    	 File file = new File(fileDir);
+    	 FileOperation fOpertion = new FileOperation();
+         String txtContent = fOpertion.readTxtFile(file);
+         Pattern pattern = Pattern.compile("[$]+");
+         String[] strs = pattern.split(txtContent.trim());
+         if(Arrays.asList(strs).contains(queryString) == false){
+        	 if(strs.length<6){
+    	         fOpertion.contentToTxt(file,"$"+queryString);
+    	     }else{
+    	        String historyStr = "";
+    	        for(int i=1;i<5;i++){
+    	        	historyStr = historyStr + "$"+strs[i+1];        			 
+    	        }
+    	        historyStr =historyStr+"$"+ queryString;
+    	        fOpertion.writeTxtFile(file,historyStr);//覆盖掉原有内容
+    	    }
+    	 }	  
+    }         
+    
+    //打开文件夹
     public void JB_openDir1(ActionEvent e) {
     	JFileChooser chooser = new JFileChooser();
     	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -346,6 +477,24 @@ public class MainFrame extends JFrame implements ActionListener {
     	String path = chooser.getSelectedFile().getPath();
     	jTextField2.setText(path);//添加文件夹路径到文本域
     	
+    }
+    
+    ////将历史记录输入到关键词栏
+    @SuppressWarnings("deprecation")
+	public void inputHistory1(ActionEvent e) {	
+    	jTextField3.setText(jButton11.getLabel());//添加历史记录到关键词栏	
+    }
+    public void inputHistory2(ActionEvent e) {	
+    	jTextField3.setText(jButton12.getLabel());//添加历史记录到关键词栏	
+    }
+    public void inputHistory3(ActionEvent e) {	
+    	jTextField3.setText(jButton13.getLabel());//添加历史记录到关键词栏
+    }
+    public void inputHistory4(ActionEvent e) {	
+    	jTextField3.setText(jButton14.getLabel());//添加历史记录到关键词栏
+    }
+    public void inputHistory5(ActionEvent e) {	
+    	jTextField3.setText(jButton15.getLabel());//添加历史记录到关键词栏
     }
     
     
@@ -443,7 +592,12 @@ class MainFrame_jButton2_actionAdapter implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        adaptee.jButton2_actionPerformed(e);
+        try {
+			adaptee.jButton2_actionPerformed(e);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
 }
 
@@ -482,3 +636,65 @@ class openDir2 implements ActionListener {
         adaptee.JB_openDir2(e);
     }
 }
+
+//历史记录1
+class history1 implements ActionListener {
+  private MainFrame adaptee;
+  history1(MainFrame adaptee) {
+      this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+      adaptee.inputHistory1(e);
+  }
+}
+
+//历史记录2
+class history2 implements ActionListener {
+private MainFrame adaptee;
+history2(MainFrame adaptee) {
+    this.adaptee = adaptee;
+}
+
+public void actionPerformed(ActionEvent e) {
+    adaptee.inputHistory2(e);
+}
+}
+
+//历史记录3
+class history3 implements ActionListener {
+private MainFrame adaptee;
+history3(MainFrame adaptee) {
+    this.adaptee = adaptee;
+}
+
+public void actionPerformed(ActionEvent e) {
+    adaptee.inputHistory3(e);
+}
+}
+
+//历史记录4
+class history4 implements ActionListener {
+private MainFrame adaptee;
+history4(MainFrame adaptee) {
+  this.adaptee = adaptee;
+}
+
+public void actionPerformed(ActionEvent e) {
+  adaptee.inputHistory4(e);
+}
+}
+
+//历史记录5
+class history5 implements ActionListener {
+private MainFrame adaptee;
+history5(MainFrame adaptee) {
+  this.adaptee = adaptee;
+}
+
+public void actionPerformed(ActionEvent e) {
+  adaptee.inputHistory5(e);
+}
+}
+
+
