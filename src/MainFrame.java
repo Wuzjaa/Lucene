@@ -93,13 +93,13 @@ public class MainFrame extends JFrame implements ActionListener {
         jLabel2.setText("索引路径");
         jLabel2.setBounds(new Rectangle(16, 38, 50, 19));
         jLabel3.setText("查询关键字");
-        jLabel3.setBounds(new Rectangle(16, 69, 50, 19));
+        jLabel3.setBounds(new Rectangle(16, 65, 50, 19));
         jLabel4.setText("查询结果如下");
         jLabel4.setBounds(new Rectangle(16, 108, 107, 19));
         jTextField1.setBounds(new Rectangle(82, 14, 207, 19));
         jTextField2.setBounds(new Rectangle(82, 38, 207, 19));
         jTextField2.setText("");
-        jTextField3.setBounds(new Rectangle(82, 69, 207, 27));
+        jTextField3.setBounds(new Rectangle(82, 65, 207, 19));
         jTextField4.setBounds(new Rectangle(172, 106, 210, 19));
         jTextField4.setBackground(this.getBackground());
         jTextField4.setBorder(BorderFactory.createEmptyBorder());
@@ -107,19 +107,19 @@ public class MainFrame extends JFrame implements ActionListener {
         jButton1.setBounds(new Rectangle(340, 19, 40, 27));
         jButton1.setText("建立索引");
         jButton1.addActionListener(new MainFrame_jButton1_actionAdapter(this));
-        jButton2.setBounds(new Rectangle(290, 69, 40, 27));
+        jButton2.setBounds(new Rectangle(290, 65, 40, 19));
         jButton2.setText("开始查询");
         jButton2.addActionListener(new MainFrame_jButton2_actionAdapter(this));
-        jButton3.setBounds(new Rectangle(116, 267, 74, 23));
+        jButton3.setBounds(new Rectangle(116, 267, 74, 19));
         jButton3.setText("上一页");
         jButton3.addActionListener(this);
-        jButton4.setBounds(new Rectangle(16, 267, 78, 23));
+        jButton4.setBounds(new Rectangle(16, 267, 78, 19));
         jButton4.setText("首页");
         jButton4.addActionListener(this);
-        jButton5.setBounds(new Rectangle(213, 267, 76, 22));
+        jButton5.setBounds(new Rectangle(213, 267, 76, 19));
         jButton5.setText("下一页");
         jButton5.addActionListener(this);
-        jButton6.setBounds(new Rectangle(312, 267, 72, 21));
+        jButton6.setBounds(new Rectangle(312, 267, 72, 19));
         jButton6.setText("尾页");
         jButton6.addActionListener(this);
         jPanel1.setBackground(Color.BLUE);
@@ -136,23 +136,23 @@ public class MainFrame extends JFrame implements ActionListener {
         
         
         //历史记录button
-        jButton11.setBounds(new Rectangle(82, 100, 30, 19));
+        jButton11.setBounds(new Rectangle(82, 87, 30, 19));
         jButton11.addActionListener(new history1(this));
         jButton11.setVisible(false);
         
-        jButton12.setBounds(new Rectangle(120, 100, 30, 19));
+        jButton12.setBounds(new Rectangle(120, 87, 30, 19));
         jButton12.addActionListener(new history2(this));
         jButton12.setVisible(false);
      
-        jButton13.setBounds(new Rectangle(160, 100, 30, 19));
+        jButton13.setBounds(new Rectangle(160,87, 30, 19));
         jButton13.addActionListener(new history3(this));
         jButton13.setVisible(false);
         
-        jButton14.setBounds(new Rectangle(200, 100, 30, 19));
+        jButton14.setBounds(new Rectangle(200, 87, 30, 19));
         jButton14.addActionListener(new history4(this));
         jButton14.setVisible(false);
         
-        jButton15.setBounds(new Rectangle(240, 100, 30, 19));
+        jButton15.setBounds(new Rectangle(240, 87, 30, 19));
         jButton15.addActionListener(new history5(this));
         jButton15.setVisible(false);
         
@@ -447,7 +447,7 @@ public class MainFrame extends JFrame implements ActionListener {
          String txtContent = fOpertion.readTxtFile(file);
          Pattern pattern = Pattern.compile("[$]+");
          String[] strs = pattern.split(txtContent.trim());
-         if(Arrays.asList(strs).contains(queryString) == false){
+         if(Arrays.asList(strs).contains(queryString.trim()) == false){
         	 if(strs.length<6){
     	         fOpertion.contentToTxt(file,"$"+queryString);
     	     }else{
